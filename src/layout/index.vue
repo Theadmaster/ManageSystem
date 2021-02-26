@@ -4,7 +4,7 @@
       <el-header>
         <div class="logo">
           <!-- <span>神行者</span> -->
-          <img src="~/assets/logo-text.png" alt="">
+          <img src="~/assets/img/cec-logo2.png" alt="">
           <i :class="collapseIcon" @click="collapseClick"></i>
         </div>
         <div class="breadcrumb"> 
@@ -31,27 +31,27 @@
               <el-menu
               :default-active="this.$router.history.current.path"
               class="el-menu-vertical-demo"
-              background-color="#222526"
-              active-text-color="#fff"
+              background-color="#334154"
+              
               text-color="#95afc0"
               :collapse="isCollapse"
               router
               >
               <el-menu-item index="/infolist" style="width: 210px;">
-                <i class="el-icon-document"></i>
-                <span slot="title">信息列表</span>
+                <i class="el-icon-s-order"></i>
+                <span slot="title">货单管理</span>
               </el-menu-item>
               <el-menu-item index="/controllist" style="width: 210px;">
-                <i class="el-icon-monitor"></i>
-                <span slot="title">控制列表</span>
+                <i class="el-icon-s-shop"></i>
+                <span slot="title">供应管理</span>
               </el-menu-item>
               <el-menu-item index="/staffmanage" style="width: 210px;">
-                <i class="el-icon-user"></i>
+                <i class="el-icon-s-custom"></i>
                 <span slot="title">人员管理</span>
               </el-menu-item>
               <el-menu-item index="/carsmanage" style="width: 210px;">
-                <i class="el-icon-truck"></i>
-                <span slot="title">车辆管理</span>
+                <i class="el-icon-s-grid"></i>
+                <span slot="title">耗材管理</span>
               </el-menu-item>
             </el-menu>
         </el-aside>
@@ -91,7 +91,7 @@ export default {
       isCollapse: false,
       asideWidth: '210',
       collapseIcon: 'el-icon-s-fold',
-      title: '信息列表',
+      title: '货单管理',
     }
   },
   computed: {
@@ -120,16 +120,16 @@ export default {
     breadChange() {
       switch(this.$router.history.current.path) {
         case '/infolist':
-          this.title = '信息列表'
+          this.title = '货单管理'
           break
         case '/controllist': 
-          this.title = '控制列表'
+          this.title = '供应管理'
           break
         case '/staffmanage':
           this.title = '人员管理'
           break
         case '/carsmanage':
-          this.title = '车辆管理'
+          this.title = '耗材管理'
           break
       }
     },
@@ -151,7 +151,7 @@ export default {
 <style>
   .el-header {
     background-color: #fff;
-    color: #333;
+    color: #333333;
     height: 52px!important;
     line-height: 52px;
     padding: 0;
@@ -160,13 +160,14 @@ export default {
   }
   
   .el-aside {
-    background-color: #222526;
+    background-color: #334154;
     color: #333;
     line-height: 200px;
   }
+
   
   .el-main {
-    background-color: #e0e8f5;
+    background-color: #fff;
   }
 
   .home-container {

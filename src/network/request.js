@@ -1,12 +1,14 @@
 import Axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import qs from 'qs'
 
 export function request(config) {
     // 1.创建axios实例
     const instance = Axios.create({
-        baseURL: 'http://127.0.0.1',
-        timeout: 5000
+        baseURL: 'http://121.196.159.48:8081',
+        timeout: 5000,
+        
     })
     // 2.axios 拦截器
     // 请求拦截

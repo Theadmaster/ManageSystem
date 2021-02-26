@@ -180,6 +180,7 @@
 
 <script>
 import { request } from '@/network/request'
+import staff from '@/mock/staffmanage'
 export default {
     name: 'StaffManage',
     data() {
@@ -233,15 +234,19 @@ export default {
        * 获取列表信息
        */
       getList() {
-        request({
-          url: '/getStaffList',
-          data: this.listQuery,
-          method: 'post'
-        }).then(({data}) => {
-          console.log(data);
-          this.list = data
+        // request({
+        //   url: '/getStaffList',
+        //   data: this.listQuery,
+        //   method: 'post'
+        // }).then(({data}) => {
+        //   console.log(data);
+        //   this.list = data
+        //   this.listLoading = false
+        // })
+        setTimeout(() => {
+          this.list = staff.getStaffList().data
           this.listLoading = false
-        })
+        },1000)
       },
       /**
        * 添加人员

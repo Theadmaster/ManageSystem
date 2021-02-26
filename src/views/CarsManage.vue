@@ -45,54 +45,64 @@
            type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="注册单位:">
-                  <span>{{ props.row.registrant }}</span>
+                <el-form-item label="存储ID:">
+                  <span>{{ props.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="承包人:">
+                <el-form-item label="规格:">
+                  <span>{{ props.row.model }}</span>
+                </el-form-item>
+                <el-form-item label="产品名称:">
                   <span>{{ props.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="车牌号:">
-                  <span>{{ props.row.carId }}</span>
+                <el-form-item label="产品批号:">
+                  <span>{{ props.row.batchNum }}</span>
                 </el-form-item>
-                <el-form-item label="车型:">
-                  <span>{{ props.row.type }}</span>
+                <el-form-item label="生产厂商:">
+                  <span>{{ props.row.producerName }}</span>
                 </el-form-item>
-                <el-form-item label="发动机型号:">
-                  <span>{{ props.row.engineType }}</span>
+                <el-form-item label="存储数量:">
+                  <span>{{ props.row.count }}</span>
                 </el-form-item>
-                <el-form-item label="车架号:">
-                  <span>{{ props.row.vin }}</span>
+                
+                <el-form-item label="生产日期:">
+                  <span>{{ props.row.manufactureDate }}</span>
                 </el-form-item>
-                <el-form-item label="变速箱:">
-                  <span>{{ props.row.gearbox }}</span>
+                <el-form-item label="截止日期:">
+                  <span>{{ props.row.expirationDate }}</span>
                 </el-form-item>
-                <el-form-item label="燃料类型:">
-                  <span>{{ props.row.fuelType }}</span>
+                <el-form-item label="存储单位:">
+                  <span>{{ props.row.unit }}</span>
                 </el-form-item>
-                <el-form-item label="备注:">
-                  <span>{{ props.row.remark }}</span>
+                <el-form-item label="存储位置:">
+                  <span>{{ props.row.position }}</span>
+                </el-form-item>
+                <el-form-item label="存储条件:">
+                  <span>{{ props.row.storageCondition }}</span>
+                </el-form-item>
+                <el-form-item label="创建时间:">
+                  <span>{{ props.row.createTime }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
 
           <el-table-column
-            prop="carId"
-            label="车牌号"
+            prop="batchNum"
+            label="批号"
             width="">
           </el-table-column>
           <el-table-column
             prop="name"
-            label="承包人"
+            label="产品名称"
             width="">
           </el-table-column>
           <el-table-column
-            prop="registrant"
-            label="注册单位">
+            prop="producerName"
+            label="生产厂商">
           </el-table-column>
           <el-table-column
-            prop="vin"
-            label="车架号">
+            prop="count"
+            label="存储数量">
           </el-table-column>
         </el-table>
       </el-card>
@@ -413,14 +423,25 @@ export default {
        * 获取列表
        */
       getList() {
+        // request({
+        //   url: '/getCarList',
+        //   data: this.listQuery,
+        //   method: 'post'
+        // }).then(({data}) => {
+        //   console.log(data);
+        //   this.list = data
+        //   this.listLoading = false
+        // })
         request({
-          url: '/getCarList',
-          data: this.listQuery,
-          method: 'post'
-        }).then(({data}) => {
-          console.log(data);
-          this.list = data
+          url: `/manager/storage?name=一号仓库`,
+          method: 'get'
+        }).then(({list}) => {
+          console.log(list)
+          this.list = list[0].productVos
           this.listLoading = false
+          console.log(this.list);
+        }).catch(err => {
+          console.log(err);
         })
       },
       /**

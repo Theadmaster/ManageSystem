@@ -3,7 +3,7 @@
     <div class="box">
       <!-- logo -->
       <div class="logo">
-        <img src="~assets/logo-img.png" alt />
+        <img src="~assets/img/cec-logo1.png" alt />
       </div>
       <!-- 表单 -->
       <el-form label-width="0px" :rules="rules" :model="user" ref="formRef">
@@ -134,6 +134,7 @@ export default {
   transform: translate(-50%, 50%);
   background-color: #fff;
   overflow: hidden;
+  
 }
 
 .logo img {

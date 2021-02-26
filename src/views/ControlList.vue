@@ -3,9 +3,12 @@
     <el-card class="control-bar">
       <div class="header">
         <div class="btn-group">
-          <el-button :disabled="currentRow === null" type="primary" icon="el-icon-s-operation" size="mini" @click="controlClick">控制设备</el-button> 
-          <el-button :disabled="currentRow === null" type="success" icon="el-icon-video-camera" size="mini" @click="infoClick">摄像信息</el-button> 
-        </div>
+            <el-button type="success" icon="el-icon-plus" size="mini" @click="addClick">新建</el-button> 
+            <el-button :disabled="listSelection.length !== 1" type="warning" icon="el-icon-edit" size="mini" @click="editClick">编辑</el-button> 
+            <el-button :disabled="listSelection.length === 0" type="danger" icon="el-icon-delete" size="mini" @click="deleteClick(listSelection[0])">删除</el-button> 
+            <el-button type="primary" icon="el-icon-upload" size="mini" @click="inputClick">导入</el-button> 
+            <el-button :disabled="listSelection.length === 0" type="info" icon="el-icon-download" size="mini" @click="exportClick">导出</el-button> 
+          </div>
         <div class="search-group">
           <div style="margin-right:5px;">
             <el-input
@@ -25,33 +28,40 @@
     <el-card class="table">
       <el-table
         :data="list"
+        :ref="tableKey"
+        :key="tableKey"
         v-loading="listLoading"
         stripe
         height="calc(100vh - 250px)"
         highlight-current-row
-        @current-change="handleCurrentChange"
+        @selection-change="s => listSelection = s"
+        @row-click="row => $refs[tableKey].toggleRowSelection(row, !listSelection.includes(row))"
         style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
         <el-table-column
           prop="id"
           label="id"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="ip"
-          label="ip信息"
+          prop="name"
+          label="供应商名称"
           width="">
         </el-table-column>
         <el-table-column
-          prop="sendPipe"
-          label="发送管道">
+          prop="linkman"
+          label="联系人">
         </el-table-column>
         <el-table-column
-          prop="receivePipe"
-          label="接收管道">
+          prop="phoneNum"
+          label="联系电话">
         </el-table-column>
         <el-table-column
-          prop="trafficFlow"
-          label="车流量">
+          prop="address"
+          label="地址">
         </el-table-column>
       </el-table>
     </el-card>
@@ -99,6 +109,28 @@
     </el-dialog>
     <!-- /信息对话框 -->
 
+    <!-- 文件上传对话框 -->
+    <el-dialog
+      title="文件上传"
+      :visible.sync="fileDialogVisible"
+      width="400px"
+      >
+      <el-upload
+        class="upload-demo"
+        drag
+        action="https://jsonplaceholder.typicode.com/posts/"
+        multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="fileDialogVisible = false">取 消</el-button> -->
+        <el-button size="mini" type="primary" @click="fileDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 文件上传对话框 -->
+
     <!-- 分页栏 -->
     <div class="footer">
       <el-pagination
@@ -126,6 +158,9 @@ export default {
         list: [],
         listLoading: true,
         currentRow: null,
+        tableKey: 0,
+        listSelection: [],
+        fileDialogVisible: false,
         listQuery: {
           currentPage: 1,
           pageSize: 100,
@@ -145,27 +180,42 @@ export default {
        */
       getList() {
         request({
-          url: 'getControlList',
-          data: this.listQuery,
-          method: 'post'
-        }).then(({data}) => {
-          console.log(data);
-          this.list = data
+          url: '/employee/supplier?employeeNo=10001',
+          method: 'get'
+        }).then(({list}) => {
+          console.log(list);
+          this.list = list[0].list.concat(list[1].list)
+          let count = 1
+          this.list.map(item => item.id=count++)
+          console.log(this.list);
           this.listLoading = false
+        }).catch(err => {
+          console.log(err)
         })
       },
       /**
        * 控制按钮
        */
-      controlClick() {
+      addClick() {
         this.controlDialogVisible = true
       },
       /**
        * 摄像信息按钮
        */
-      infoClick() {
+      editClick() {
         this.infoDialogTableVisible = true
       },  
+      deleteClick(){
+        this.$confirm(`删除后无法撤销，确定删除当前选中的${this.listSelection.length}条数据?`, '提示', { type: 'warning' }).then(() => {
+          // request({})
+        })
+      },
+      inputClick() {
+        this.fileDialogVisible = true
+      },
+      exportClick() {
+
+      },
       /**
        * 选中一行
        */

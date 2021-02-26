@@ -3,9 +3,12 @@
     <el-card class="control-bar">
       <div class="header">
         <div class="btn-group">
-          <el-button :disabled="currentRow===null" type="primary" icon="el-icon-picture-outline" size="mini" @click="photoClick">查看照片</el-button> 
-          <el-button type="success" icon="el-icon-upload2" size="mini" @click="fileClick">文件上传</el-button> 
-        </div>
+            <el-button type="success" icon="el-icon-plus" size="mini" @click="addClick">新建</el-button> 
+            <el-button :disabled="listSelection.length !== 1" type="warning" icon="el-icon-edit" size="mini" @click="editClick">编辑</el-button> 
+            <el-button :disabled="listSelection.length === 0" type="danger" icon="el-icon-delete" size="mini" @click="deleteClick(listSelection[0])">删除</el-button> 
+            <el-button type="primary" icon="el-icon-upload" size="mini" @click="fileClick">导入</el-button> 
+            <el-button :disabled="listSelection.length === 0" type="info" icon="el-icon-download" size="mini" @click="exportClick">导出</el-button> 
+          </div>
         <div class="search-group">
           <div style="margin-right:5px;">
             <el-input
@@ -24,29 +27,98 @@
     <el-card class="table">
       <el-table
         :data="list"
+        :ref="tableKey"
+        :key="tableKey"
         v-loading="listLoading"
         stripe
         height="calc(100vh - 250px)"
         highlight-current-row
-        @current-change="handleCurrentChange"
+        @selection-change="s => listSelection = s"
+        @row-click="row => $refs[tableKey].toggleRowSelection(row, !listSelection.includes(row))"
         style="width: 100%">
         <el-table-column
-          prop="carId"
-          label="车牌号"
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column 
+           type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="货单编号:">
+                  <span>{{ props.row.id }}</span>
+                </el-form-item>
+                
+                <el-form-item label="发货单位:">
+                  <span>{{ props.row.name }}</span>
+                </el-form-item>
+                <el-form-item label="收货单位:">
+                  <span>上海好安健客科技有限公司</span>
+                  <!-- <span>C320287879</span> -->
+                </el-form-item>
+                <el-form-item label="地址:">
+                  <span>{{ props.row.address }}</span>
+                </el-form-item>
+                <el-form-item label="发货方联系人:">
+                  <span>{{ props.row.linkman }}</span>
+                </el-form-item>
+                
+                <el-form-item label="发货方联系电话:">
+                  <span>{{ props.row.phoneNum }}</span>
+                </el-form-item>
+                <el-form-item label="收货方联系人:">
+                  <span>费丽娟</span>
+                </el-form-item>
+                <el-form-item label="收获方联系电话:">
+                  <span>15834853454</span>
+                </el-form-item>
+                <el-form-item label="发货方经营许可证:">
+                  <span>粤B0918</span>
+                </el-form-item>
+                <el-form-item label="收货方经营许可证:">
+                  <span>浙嘉食药监械经营许20180026号</span>
+                </el-form-item>
+                <el-form-item label="货品数量:">
+                  <span>{{ props.row.inspectedNum }}套</span>
+                </el-form-item>
+                <el-form-item label="日期:">
+                  <span>{{ props.row.date }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+        <el-table-column
+          prop="id"
+          label="货单编号"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="发货单位"
           width="">
         </el-table-column>
         <el-table-column
-          prop="carSeat"
-          label="车位号"
-          width="">
+          prop="linkman"
+          label="联系人">
         </el-table-column>
         <el-table-column
-          prop="disTime"
-          label="识别时间">
+          prop="phoneNum"
+          label="联系电话">
+        </el-table-column>
+         <el-table-column
+          prop="date"
+          label="日期">
         </el-table-column>
         <el-table-column
-          prop="info"
-          label="违停信息">
+          prop="address"
+          label="地址">
+        </el-table-column>
+        <el-table-column
+          prop="inspectNum"
+          label="未检数目">
+        </el-table-column>
+        <el-table-column
+          prop="inspectedNum"
+          label="已检数目">
         </el-table-column>
       </el-table>
     </el-card>
@@ -112,6 +184,7 @@
 
 <script>
 import { request } from '@/network/request'
+import qs from 'qs'
 export default {
   name: 'InfoList',
   data() {
@@ -119,6 +192,8 @@ export default {
       list: [],
       listLoading: true,
       currentRow: null,
+      tableKey: 0,
+      listSelection: [],
       listQuery: {
         currentPage: 1,
         pageSize: 100,
@@ -137,15 +212,26 @@ export default {
      * 获取列表
      */
     getList() {
+      // request({
+      //   url: '/getInfoList',
+      //   method: 'post',
+      //   data: this.listQuery
+      // }).then(({data}) => {
+      //   console.log(data);
+      //   this.list = data
+      //   this.listLoading = false
+      // })
       request({
-        url: '/getInfoList',
-        method: 'post',
-        data: this.listQuery
-      }).then(({data}) => {
-        console.log(data);
-        this.list = data
-        this.listLoading = false
-      })
+          url: '/employee/supplier?employeeNo=10001',
+          method: 'get'
+        }).then(({list}) => {
+          console.log(list);
+          this.list = list[0].list.concat(list[1].list)
+          console.log(this.list);
+          this.listLoading = false
+        }).catch(err => {
+          console.log(err)
+        })
     },
     /**
      * 改变pagesize
@@ -162,8 +248,19 @@ export default {
     /**
      * 查看照片
      */
-    photoClick() {
+    addClick() {
       this.photoDialogVisible = true
+    },
+    editClick() {
+
+    },
+    deleteClick() {
+     this.$confirm(`删除后无法撤销，确定删除当前选中的${this.listSelection.length}条数据?`, '提示', { type: 'warning' }).then(() => {
+          // request({})
+        })
+    },
+    exportClick() {
+
     },
     /**
      * 上传文件
@@ -193,4 +290,17 @@ export default {
 .content-text {
   margin: 30px 30px 0 30px;
 }
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+    /* background-color: #f5f6fa; */
+  }
 </style>
