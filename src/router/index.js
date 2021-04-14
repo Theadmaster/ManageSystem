@@ -36,6 +36,10 @@ const routes = [
             {
                 path: '/carsmanage',
                 component: () => import('views/CarsManage')
+            },
+            {
+                path: '/calendar',
+                component: () => import('views/Calendar')
             }
         ]
     }

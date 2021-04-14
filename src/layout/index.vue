@@ -53,6 +53,10 @@
                 <i class="el-icon-s-grid"></i>
                 <span slot="title">耗材管理</span>
               </el-menu-item>
+              <el-menu-item index="/calendar" style="width: 210px;">
+                <i class="el-icon-s-platform"></i>
+                <span slot="title">排班管理</span>
+              </el-menu-item>
             </el-menu>
         </el-aside>
         <el-main>

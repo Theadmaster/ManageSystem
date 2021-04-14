@@ -5,7 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/font/iconfont.css'
 import router from './router/index'
 import store from './store'
-// import '@/mock'
+import '@/mock'
 
 Vue.use(Element)
 
