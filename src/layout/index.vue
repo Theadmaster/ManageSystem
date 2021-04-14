@@ -135,6 +135,9 @@ export default {
         case '/carsmanage':
           this.title = '耗材管理'
           break
+        case '/calendar':
+          this.title = '排班管理'
+          break
       }
     },
     /**
