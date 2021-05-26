@@ -6,6 +6,7 @@
             <el-button type="success" icon="el-icon-plus" size="mini" @click="addClick">新建</el-button> 
             <el-button :disabled="listSelection.length !== 1" type="warning" icon="el-icon-edit" size="mini" @click="editClick">编辑</el-button> 
             <el-button :disabled="listSelection.length === 0" type="danger" icon="el-icon-delete" size="mini" @click="deleteClick(listSelection[0])">删除</el-button> 
+            <el-button :disabled="listSelection.length !== 1" type="success" icon="el-icon-date" size="mini" @click="calendarClick">排班管理</el-button> 
             <el-button type="primary" icon="el-icon-upload" size="mini" @click="inputClick">导入</el-button> 
             <el-button :disabled="listSelection.length === 0" type="info" icon="el-icon-download" size="mini" @click="exportClick">导出</el-button> 
           </div>
@@ -327,6 +328,12 @@ export default {
        * 编辑员工
        */
       handleEdit() {
+
+      },
+      /**
+       * 员工排班管理
+       */
+      calendarClick() {
 
       }
     }

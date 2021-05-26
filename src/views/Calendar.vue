@@ -61,9 +61,9 @@ export default {
         return {
             value: new Date(),
             calendarData: [
-                { months: ['03', '04'],days: ['14'],things: '王齐庆值班' },
-                { months: ['04'], days: ['02'],things: '李正道值班' },
-                { months: ['04'], days: ['02'],things: '孙文值班' },
+                { months: ['04', '05'],days: ['14'],things: '王齐庆值班' },
+                { months: ['05'], days: ['02'],things: '李正道值班' },
+                { months: ['05'], days: ['02'],things: '孙文值班' },
                 // { months: ['04'], days: ['02'],things: '看月亮' }   
             ],
             list: [],
